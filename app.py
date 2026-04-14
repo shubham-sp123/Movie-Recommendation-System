@@ -12,19 +12,18 @@ st.title('Movie Recommendation system')
 with open('movies.pickle','rb') as m:
     movies = pickle.load(m)
 
-similarities = joblib.load('similarities.joblib')
+top_similarities = joblib.load('top_similarities.joblib')
 
 movies_names = movies['title'].values
 
 def recommend(name_movie):
     movie_index = movies[movies['title'] == name_movie].index[0]
-    recommendation = similarities[movie_index]
-    movie_list = sorted(enumerate(recommendation),reverse=True,key=lambda x:x[1])[1:6] 
+    movie_list = top_similarities[movie_index]
 
     recommended_movies = []
 
-    for i in movie_list:
-        recommended_movies.append(movies.iloc[i[0]].title)
+    for i in movie_list[:5]:
+        recommended_movies.append(movies.iloc[i].title)
     
     return recommended_movies
 
